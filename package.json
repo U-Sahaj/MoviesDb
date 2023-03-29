@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "vitest --coverage"
+    "test": "vitest --coverage --no-watch"
   },
   "author": "",
   "license": "ISC",
@@ -13,12 +13,7 @@
     "mongodb-memory-server": "^8.12.1",
     "mongoose": "^7.0.3",
     "ts-node": "^10.9.1",
-    "vitest": "^0.29.7"
-  },
-  "config": {
-    "mongodbMemoryServer": {
-      "MONGOMS_VERSION": "6.0.4"
-    }
+    "vitest": "^0.29.8"
   },
   "dependencies": {
     "mongodb": "^5.1.0"

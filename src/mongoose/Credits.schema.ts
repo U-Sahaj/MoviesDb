@@ -13,7 +13,7 @@ const crewSchema = new mongoose.Schema({
 });
 
 export const creditsSchema = new mongoose.Schema<CreditsType>({
-  creditsId: {
+  movie_id: {
     type: Number,
     required: true,
   },

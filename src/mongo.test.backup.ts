@@ -7,14 +7,14 @@ tsnode.register({ transpileOnly: true })
 
 const runTest = async () => {
   const mongod = await MongoMemoryServer.create();
-  await mongod.start();
-  const uri = await mongod.getUri()
+  // await mongod.start();
+  const uri = mongod.getUri()
   // Do your tests here
   console.log('MongoDB URI:', uri)
   await mongod.stop()
 }
 
-describe.skip('Mongo Memory Server Test', () => {
+describe('Mongo Memory Server Test', () => {
   it('Test MongoDB', async () => {
     await runTest()
   })

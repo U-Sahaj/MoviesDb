@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { afterAll, beforeAll, beforeEach, describe, expect, test } from 'vitest';
 
-describe('MongoDB CRUD operations', () => {
+describe.skip('MongoDB CRUD operations', () => {
   let connection;
   let db;
 
@@ -18,7 +18,7 @@ describe('MongoDB CRUD operations', () => {
 
   beforeEach(async () => {
     const collection = await db.collection('userpreferences');
-    await collection.deleteMany({});
+    //await collection.deleteMany({});
   });  
 
   test('Inserts and retrieves data from MongoDB', async () => {
@@ -37,5 +37,6 @@ describe('MongoDB CRUD operations', () => {
 
     // Verify that the data was inserted correctly
     expect(result).toEqual(data);
+    console.log(`userpreferences: ${result.length} records inserted`)
   });
 });

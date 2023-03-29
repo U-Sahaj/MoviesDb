@@ -3,5 +3,5 @@ export type UserPreferencesType = {
     preferred_languages: string[];
     favourite_actors: string[];
     favourite_directors: string[];
-  }
+}
   

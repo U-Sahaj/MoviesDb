@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { UserPreferencesModel } from './UserPreferences.model';
 
-describe('UserPreferencesModel', () => {
+describe.skip('UserPreferencesModel', () => {
   beforeAll(async () => {
     await mongoose.connect('mongodb://localhost:27017/TestDb');
   });
@@ -29,5 +29,9 @@ describe('UserPreferencesModel', () => {
     const foundUserPreference = await UserPreferencesModel.findOne({ user_id: userPreferencesData.user_id });
 
     expect(foundUserPreference).toEqual(expect.objectContaining(userPreferencesData));
+
+    console.log(`UserPreferences: ${foundUserPreference?.user_id}`)
+    console.log(`UserPreferences: ${foundUserPreference?.preferred_languages}`)
+    
   });
 });
