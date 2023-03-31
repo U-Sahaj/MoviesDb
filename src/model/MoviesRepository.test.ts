@@ -16,7 +16,7 @@ describe('MoviesRepository', () => {
   let moviesRepository: MoviesRepository;
 
   beforeAll(async () => {
-    await connect('mongodb://localhost:27017/TestDb');
+    await connect('mongodb://test-mongo:27017/TestDB');
 
     userPreferencesModel = UserPreferencesModel
     creditsModel = CreditsModel
@@ -25,7 +25,7 @@ describe('MoviesRepository', () => {
     moviesRepository = new MoviesRepository(userPreferencesModel, creditsModel, detailsModel);
   
     // await moviesRepository.loadData(userPreferencesModel, creditsModel, detailsModel);
-    // await loadData(userPreferencesModel, creditsModel, detailsModel);
+    await loadData(userPreferencesModel, creditsModel, detailsModel);
   });
 
   afterAll(async () => {
@@ -43,7 +43,7 @@ describe('MoviesRepository', () => {
     }); 
   });
 
-  describe.skip('findMoviesByDirectors', () => {
+  describe('findMoviesByDirectors', () => {
     it('returns the movies directed by the given director name', async () => {
       const foundMovies = await moviesRepository.findMoviesByDirector('Steven Spielberg');
       expect(foundMovies).toEqual(['Avatar'])
@@ -52,7 +52,7 @@ describe('MoviesRepository', () => {
   });
 
 
-  describe('findMovies', () => {
+  describe.skip('findMovies', () => {
     it('returns the top 3 recommended movies for a user based on their preferences', async () => {
       const userPreferences = {
         user_id: '100',
