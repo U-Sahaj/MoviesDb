@@ -1,21 +1,57 @@
 import { Model } from 'mongoose';
-import { CreditsType } from '../Interfaces/CreditsType';
-import { DetailsType } from '../Interfaces/DetailsType';
-import { UserPreferencesType } from '../Interfaces/UserPreferencesType';
+import { MovieRecommendationType } from '../Interfaces/MovieRecommendationType';
 import { UserPreferencesDocument } from '../mongoose/UserPreferences.schema';
+import { IMoviesRepository } from '../Interfaces/IMoviesRepository';
+import { DetailsDocument } from '../mongoose/Details.schema';
+import { UserPreferencesModel } from '../mongoose/UserPreferences.model';
+import { CreditsModel } from '../mongoose/Credits.model';
+import { DetailsModel } from '../mongoose/Details.model';
+import { CreditsDocument } from '../mongoose/Credits.schema';
 
-export class MoviesRepository {
+// define the langMap object
+const langMap = {
+  "English": "en",
+  "Spanish": "es",
+  "French": "fr",
+  "Japanese": "ja"
+  // add more mappings as needed
+};
+
+export class MoviesRepository implements IMoviesRepository{
   private userPreferencesModel: Model<UserPreferencesDocument>;
-  private creditsModel: Model<CreditsType>;
-  private detailsModel: Model<DetailsType>;
+  private creditsModel: Model<CreditsDocument>;
+  private detailsModel: Model<DetailsDocument>;
 
-  constructor(userPreferencesModel: Model<UserPreferencesDocument>,
-              creditsModel: Model<CreditsType>, 
-              detailsModel: Model<DetailsType>) {
-    this.userPreferencesModel = userPreferencesModel;
-    this.creditsModel = creditsModel;
-    this.detailsModel = detailsModel;
+  private constructor() {
+    this.userPreferencesModel = UserPreferencesModel;
+    this.creditsModel = CreditsModel;
+    this.detailsModel = DetailsModel;
+  };
+
+  private static instance: MoviesRepository;
+
+  public static getInstance(): MoviesRepository {
+    if (!MoviesRepository.instance) {
+      MoviesRepository.instance = new MoviesRepository();
+    }
+    return MoviesRepository.instance;
   }
+
+
+  async getMovieRecommendationsForAllUsers(): Promise<MovieRecommendationType[]> {
+    const allUserPreferences = await this.userPreferencesModel.find().lean();
+  
+    const allRecommendations = await Promise.all(
+      allUserPreferences.map(async (userPref: any) => {
+        const userId = userPref.user_id;
+        const movieRecommendations = await this.findMoviesWithoutAgg(userId);
+        return { user: userId, movies: movieRecommendations };
+      })
+    );
+  
+    return allRecommendations as unknown as Promise<MovieRecommendationType[]>;
+  }
+  
 
 
   async findMoviesByDirector(director: string): Promise<string[]> {
@@ -43,11 +79,14 @@ export class MoviesRepository {
         { "cast.name": { $in: userPreferences.favourite_actors } },
       ]
     });
-  
+
+    // map the preferred languages to original language codes
+    const languageCodes = userPreferences.preferred_languages.map(lang => langMap[lang]);
+
     // Find recommended movies from details model
     const recommendedMovies = await this.detailsModel.find({
       id: { $in: movieIds },
-      original_language: { $in: userPreferences.preferred_languages }
+      original_language: { $in: languageCodes }
     }).select('id');
 
     // Filter movies from credits model by recommended movie ids

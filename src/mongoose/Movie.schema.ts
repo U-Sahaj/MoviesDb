@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { MovieType } from "../Interfaces/MovieType";
 
-export type MovieDocument = Document & MovieType;
+export interface MovieDocument extends MovieType, Document {}
 
 export const MovieSchema = new mongoose.Schema<MovieDocument>({
   id: { type: String, required: true, unique: true },

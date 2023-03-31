@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
-import { CreditsType } from "../Interfaces/CreditsType";
-import { creditsSchema } from "./Credits.schema";
+import { CreditsDocument, creditsSchema } from "./Credits.schema";
 
-const CreditsModel = mongoose.model<CreditsType>('MoviesCredits', creditsSchema);
+const CreditsModel = mongoose.model<CreditsDocument>('MoviesCredits', creditsSchema);
 
 export { CreditsModel };

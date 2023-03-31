@@ -31,3 +31,5 @@ export const creditsSchema = new mongoose.Schema<CreditsType>({
   },
 });
 
+export interface CreditsDocument extends CreditsType, Document {}
+

@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { DetailsType } from "../Interfaces/DetailsType";
-import { detailsSchema } from "./Details.schema";
+import { DetailsDocument, detailsSchema } from "./Details.schema";
 
-export const DetailsModel = mongoose.model<DetailsType>('MoviesDetails', detailsSchema);
+export const DetailsModel = mongoose.model<DetailsDocument>('MoviesDetails', detailsSchema);
