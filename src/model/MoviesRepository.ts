@@ -39,19 +39,22 @@ export class MoviesRepository implements IMoviesRepository{
 
 
   async getMovieRecommendationsForAllUsers(): Promise<MovieRecommendationType[]> {
+    console.log(`MoviesRepository: `, this.userPreferencesModel)
     const allUserPreferences = await this.userPreferencesModel.find().lean();
-  
+    console.log(`MoviesRepository: `, allUserPreferences)
     const allRecommendations = await Promise.all(
       allUserPreferences.map(async (userPref: any) => {
         const userId = userPref.user_id;
         console.log(`MoviesRepository:`, userId)
         const movieRecommendations = await this.findMoviesWithoutAgg(userId);
-        console.log(`MoviesRepository:`, movieRecommendations)
+        console.log(`MoviesRepository: movies recommended for ${userId} are `, movieRecommendations)
 
         return { user: userId, movies: movieRecommendations };
       })
     );
-  
+
+    console.log(`MoviesRepository: `, allRecommendations)
+
     return allRecommendations as unknown as Promise<MovieRecommendationType[]>;
   }
   
@@ -101,9 +104,9 @@ export class MoviesRepository implements IMoviesRepository{
     })
     .select('title')
     .limit(3);
-  
     // Return movie titles as array of strings
-    return movies.map(movie => movie.title);
+    console.log(`findMoviesWithoutAgg: `,movies)
+    return movies.map(movie => movie.title).sort();
   };
 
   async findMoviesWithAgg(userId: string): Promise<string[]> {

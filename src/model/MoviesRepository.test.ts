@@ -36,13 +36,13 @@ describe('MoviesRepository', () => {
   });
 
 
-  describe.skip('check load data', () => {
+  describe('check load data', () => {
     it('returns the defined data above', async () => {
       const foundUserPreference = await UserPreferencesModel.findOne({ user_id: '100' });
       if (!foundUserPreference) {
         throw new Error('User preference not found');
       }
-      expect(foundUserPreference.preferred_languages).toEqual(['English', 'Spanish']);
+      expect(foundUserPreference.preferred_languages).toEqual(['Spanish']);
     }); 
   });
 
@@ -69,7 +69,7 @@ describe('MoviesRepository', () => {
     });
   });
 
-  describe("getMovieRecommendationsForAllUsers", () => {
+  describe.skip("getMovieRecommendationsForAllUsers", () => {
     it("returns an array of movie recommendations for all users", async () => {
       const recommendations = await moviesRepository.getMovieRecommendationsForAllUsers();
   

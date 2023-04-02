@@ -14,7 +14,10 @@ export class MovieRecommendationService {
   }
 
   async getMovieRecommendationsForAllUsers(): Promise<MovieRecommendationType[]> {
+    console.log(`MovieRecommendationService: getMovieRecommendationsForAllUsers start`)
     const recommendations = await MoviesRepository.getInstance().getMovieRecommendationsForAllUsers();
+    console.log(`MovieRecommendationService: `,recommendations)
+
     return recommendations;
   }
 }
