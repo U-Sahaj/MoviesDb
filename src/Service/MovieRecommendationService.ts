@@ -1,6 +1,5 @@
-import { IMoviesRepository } from "../Interfaces/IMoviesRepository";
 import { MovieRecommendationType } from "../Interfaces/MovieRecommendationType";
-import { MoviesRepository } from "../model/MoviesRepository"
+import { MoviesRepository } from "../model/MoviesRepository";
 
 export class MovieRecommendationService {
   private static instance: MovieRecommendationService;

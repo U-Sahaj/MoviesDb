@@ -44,7 +44,10 @@ export class MoviesRepository implements IMoviesRepository{
     const allRecommendations = await Promise.all(
       allUserPreferences.map(async (userPref: any) => {
         const userId = userPref.user_id;
+        console.log(`MoviesRepository:`, userId)
         const movieRecommendations = await this.findMoviesWithoutAgg(userId);
+        console.log(`MoviesRepository:`, movieRecommendations)
+
         return { user: userId, movies: movieRecommendations };
       })
     );
